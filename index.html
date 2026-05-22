@@ -45,7 +45,7 @@
 }
 
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-html,body { height:100vh; overflow:hidden; background:var(--surface-inset); font-family:var(--font-ui); color:var(--text-default); -webkit-font-smoothing:antialiased; }
+html,body { height:100vh; overflow:hidden; background:#ffffff; font-family:var(--font-ui); color:var(--text-default); -webkit-font-smoothing:antialiased; }
 body { display:flex; }
 
 /* Sidebar */
@@ -180,8 +180,19 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
   display:flex; align-items:center; justify-content:center; gap:5px; transition:all 150ms;
 }
 .btn i { font-size:13px; }
-.btn-primary { background:var(--grey-800); color:white; }
-.btn-primary:hover { background:var(--grey-700); }
+.btn-primary {
+  background-color:#000000;
+  background-image:url('./img/bg_button_cta_hover.webp');
+  background-size:cover; background-position:center;
+  color:white; position:relative; overflow:hidden;
+}
+.btn-primary::after {
+  content:''; position:absolute; inset:0;
+  background:rgba(225,228,233,1);
+  transition:background 200ms ease-out; pointer-events:none;
+}
+.btn-primary:hover:not(:disabled)::after { background:rgba(0,0,0,.2); }
+.btn-label { position:relative; z-index:1; display:flex; align-items:center; gap:5px; }
 .btn-secondary { background:var(--surface-inset); color:var(--text-default); border:1px solid var(--border-default); }
 .btn-secondary:hover { background:var(--white); }
 .btn:disabled { opacity:.3; cursor:not-allowed; }
@@ -191,7 +202,8 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
 @keyframes spin { to { transform:rotate(360deg); } }
 
 /* Main area */
-.main { flex:1; display:flex; align-items:center; justify-content:center; background:var(--surface-inset); position:relative; overflow:hidden; }
+.main { flex:1; display:flex; align-items:stretch; background:#ffffff; padding:8px; }
+.main-frame { flex:1; background:var(--surface-inset); border-radius:24px; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; }
 
 .empty-state { display:flex; flex-direction:column; align-items:center; gap:10px; pointer-events:none; }
 .empty-icon {
@@ -382,11 +394,11 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
   <div class="sb-section" style="border-bottom:none; margin-top:auto;">
     <div class="sb-label">exporter</div>
     <div class="export-btns">
-      <button class="btn btn-primary" id="exportJpeg" disabled><i class="ti ti-download"></i>JPEG</button>
-      <button class="btn btn-secondary" id="exportWebp" disabled><i class="ti ti-file-download"></i>WebP</button>
+      <button class="btn btn-primary" id="exportJpeg" disabled><span class="btn-label"><i class="ti ti-download"></i>JPEG</span></button>
+      <button class="btn btn-secondary" id="exportWebp" disabled><span class="btn-label"><i class="ti ti-file-download"></i>WebP</span></button>
     </div>
     <div style="margin-top:6px">
-      <button class="btn btn-secondary" id="saveDraftBtn" disabled style="height:30px; font-size:10px"><i class="ti ti-bookmark" style="font-size:12px"></i>Sauvegarder brouillon</button>
+      <button class="btn btn-secondary" id="saveDraftBtn" disabled><span class="btn-label"><i class="ti ti-bookmark"></i>Sauvegarder brouillon</span></button>
     </div>
     <div class="export-note" id="exportNote">Importez une image pour commencer</div>
   </div>
@@ -394,16 +406,18 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
 </aside>
 
 <main class="main" id="main">
-  <div class="main-drop-hint" id="dropHint"></div>
-  <div class="empty-state" id="emptyState">
-    <div class="empty-icon"><i class="ti ti-photo"></i></div>
-    <div class="empty-title">Blur Studio</div>
-    <div class="empty-sub">Glissez une image ou utilisez le panneau</div>
-  </div>
-  <div class="canvas-wrap" id="canvasWrap">
-    <canvas id="previewCanvas"></canvas>
-    <div class="brush-cursor" id="brushCursor"></div>
-    <div class="loading" id="loading"><div class="loading-spin"></div></div>
+  <div class="main-frame" id="mainFrame">
+    <div class="main-drop-hint" id="dropHint"></div>
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon"><i class="ti ti-photo"></i></div>
+      <div class="empty-title">Blur Studio</div>
+      <div class="empty-sub">Glissez une image ou utilisez le panneau</div>
+    </div>
+    <div class="canvas-wrap" id="canvasWrap">
+      <canvas id="previewCanvas"></canvas>
+      <div class="brush-cursor" id="brushCursor"></div>
+      <div class="loading" id="loading"><div class="loading-spin"></div></div>
+    </div>
   </div>
 </main>
 
@@ -481,7 +495,7 @@ function loadImage(file) {
 
 function sizeCanvas() {
   if (!S.image) return;
-  const m = document.getElementById('main');
+  const m = document.getElementById('mainFrame');
   const mw = m.clientWidth - 48, mh = m.clientHeight - 48;
   const ratio = S.iw / S.ih;
   let w = mw, h = w / ratio;
@@ -735,13 +749,29 @@ function getCanvasPos(e) {
 }
 
 // ── Export ─────────────────────────────────────────────────────────────────────
+function toBlobSafe(canvas, mime, quality) {
+  return new Promise(resolve => {
+    try {
+      canvas.toBlob(blob => {
+        if (blob) resolve({ blob, ext: mime === 'image/webp' ? 'webp' : 'jpg' });
+        else canvas.toBlob(b => resolve({ blob: b, ext: 'png' }), 'image/png');
+      }, mime, quality);
+    } catch (e) {
+      canvas.toBlob(b => resolve({ blob: b, ext: 'png' }), 'image/png');
+    }
+  });
+}
+
 async function exportImage(mime) {
   if (!S.image) return;
   const isJpeg = mime === 'image/jpeg';
   const btn = document.getElementById(isJpeg ? 'exportJpeg' : 'exportWebp');
   const prev = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = `<div class="spin"></div>`;
+  const spinColor = isJpeg
+    ? 'border-color:rgba(255,255,255,.2);border-top-color:white'
+    : 'border-color:rgba(0,0,0,.1);border-top-color:var(--text-default)';
+  btn.innerHTML = `<div class="spin" style="${spinColor}"></div>`;
   await new Promise(r => setTimeout(r, 20));
 
   const MAX = 8000;
@@ -764,14 +794,13 @@ async function exportImage(mime) {
   maskCanvas = prevMask;
   S.maskFeather = savedFeather;
 
-  ec.toBlob(blob => {
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `dafolle-blur-${Date.now()}.${isJpeg ? 'jpg' : 'webp'}`;
-    a.click();
-    URL.revokeObjectURL(a.href);
-    btn.disabled = false; btn.innerHTML = prev;
-  }, mime, isJpeg ? 0.97 : 0.93);
+  const { blob, ext } = await toBlobSafe(ec, mime, isJpeg ? 0.97 : 0.93);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `dafolle-blur-${Date.now()}.${ext}`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  btn.disabled = false; btn.innerHTML = prev;
 }
 
 // ── IndexedDB drafts ───────────────────────────────────────────────────────────
@@ -840,13 +869,13 @@ async function saveDraft() {
       tx.onerror = () => reject(tx.error);
     });
 
-    btn.innerHTML = '<i class="ti ti-check" style="font-size:12px"></i>Sauvegardé';
+    btn.innerHTML = '<span class="btn-label"><i class="ti ti-check"></i>Sauvegardé</span>';
     setTimeout(() => {
-      btn.innerHTML = '<i class="ti ti-bookmark" style="font-size:12px"></i>Sauvegarder brouillon';
+      btn.innerHTML = '<span class="btn-label"><i class="ti ti-bookmark"></i>Sauvegarder brouillon</span>';
       btn.disabled = false;
     }, 1800);
   } catch (e) {
-    btn.innerHTML = '<i class="ti ti-bookmark" style="font-size:12px"></i>Sauvegarder brouillon';
+    btn.innerHTML = '<span class="btn-label"><i class="ti ti-bookmark"></i>Sauvegarder brouillon</span>';
     btn.disabled = false;
     console.error('Draft save error:', e);
   }
@@ -1055,7 +1084,7 @@ importZone.addEventListener('dragover', e => { e.preventDefault(); importZone.cl
 importZone.addEventListener('dragleave', () => importZone.classList.remove('over'));
 importZone.addEventListener('drop', e => { e.preventDefault(); importZone.classList.remove('over'); if (e.dataTransfer.files[0]) loadImage(e.dataTransfer.files[0]); });
 
-const mainEl = document.getElementById('main');
+const mainEl = document.getElementById('mainFrame');
 mainEl.addEventListener('dragover', e => { e.preventDefault(); document.getElementById('dropHint').classList.add('show'); });
 mainEl.addEventListener('dragleave', () => document.getElementById('dropHint').classList.remove('show'));
 mainEl.addEventListener('drop', e => { e.preventDefault(); document.getElementById('dropHint').classList.remove('show'); if (e.dataTransfer.files[0]) loadImage(e.dataTransfer.files[0]); });
