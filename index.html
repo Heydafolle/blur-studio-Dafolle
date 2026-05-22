@@ -182,16 +182,14 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
 .btn i { font-size:13px; }
 .btn-primary {
   background-color:#000000;
-  background-image:url('./img/bg_button_cta_hover.webp');
-  background-size:cover; background-position:center;
   color:white; position:relative; overflow:hidden;
 }
 .btn-primary::after {
   content:''; position:absolute; inset:0;
-  background:rgba(225,228,233,1);
-  transition:background 200ms ease-out; pointer-events:none;
+  background:url('./img/bg_button_cta_hover.webp') center/cover;
+  opacity:0; transition:opacity 200ms ease-out; pointer-events:none;
 }
-.btn-primary:hover:not(:disabled)::after { background:rgba(0,0,0,.2); }
+.btn-primary:hover:not(:disabled)::after { opacity:1; }
 .btn-label { position:relative; z-index:1; display:flex; align-items:center; gap:5px; }
 .btn-secondary { background:var(--surface-inset); color:var(--text-default); border:1px solid var(--border-default); }
 .btn-secondary:hover { background:var(--white); }
@@ -397,7 +395,7 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
       <button class="btn btn-primary" id="exportJpeg" disabled><span class="btn-label"><i class="ti ti-download"></i>JPEG</span></button>
       <button class="btn btn-secondary" id="exportWebp" disabled><span class="btn-label"><i class="ti ti-file-download"></i>WebP</span></button>
     </div>
-    <div style="margin-top:6px">
+    <div style="margin-top:6px; display:flex;">
       <button class="btn btn-secondary" id="saveDraftBtn" disabled><span class="btn-label"><i class="ti ti-bookmark"></i>Sauvegarder brouillon</span></button>
     </div>
     <div class="export-note" id="exportNote">Importez une image pour commencer</div>
