@@ -13,7 +13,6 @@
 @font-face { font-family:'Lastik'; src:url('./Font/LastikFamily-Bold.woff2') format('woff2'),url('./Font/LastikFamily-Bold.woff') format('woff'); font-weight:700; font-display:swap; }
 
 :root {
-  /* Light theme — Dafolle OS DS */
   --white: #ffffff;
   --black: #000000;
   --grey-100: #f5f7f9;
@@ -49,7 +48,7 @@
 html,body { height:100vh; overflow:hidden; background:var(--surface-inset); font-family:var(--font-ui); color:var(--text-default); -webkit-font-smoothing:antialiased; }
 body { display:flex; }
 
-/* ── Sidebar ── */
+/* Sidebar */
 .sidebar {
   width:292px; flex-shrink:0; height:100vh;
   background:var(--surface-page);
@@ -73,12 +72,17 @@ body { display:flex; }
   color:var(--text-muted); background:var(--surface-inset);
   border:1px solid var(--border-muted); padding:2px 7px; border-radius:9999px;
 }
+.icon-btn {
+  width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center;
+  color:var(--text-muted); cursor:pointer; transition:all 150ms; border:1px solid transparent; flex-shrink:0;
+}
+.icon-btn:hover { background:var(--surface-inset); border-color:var(--border-muted); color:var(--text-default); }
+.icon-btn i { font-size:14px; }
 
 /* Section */
 .sb-section { padding:12px 16px; border-bottom:1px solid var(--border-muted); }
 .sb-label {
-  font-size:9px; font-weight:600; letter-spacing:.6px; text-transform:uppercase;
-  color:var(--text-subtle); margin-bottom:10px;
+  font-size:11px; font-weight:500; color:var(--text-muted); margin-bottom:10px; letter-spacing:-.1px;
 }
 
 /* Import zone */
@@ -98,39 +102,17 @@ body { display:flex; }
 .import-label b { color:var(--text-default); font-weight:600; }
 .import-name { font-size:10px; color:var(--brand); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
-/* Presets */
-.presets-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px; }
-.preset-card {
-  background:var(--surface-inset); border:1px solid var(--border-muted);
-  border-radius:8px; padding:9px 10px; cursor:pointer; transition:all 150ms;
-}
-.preset-card:hover { border-color:var(--border-default); background:var(--white); box-shadow:var(--shadow-xs); }
-.preset-card.active { border-color:var(--brand); background:rgba(56,159,255,.05); }
-.preset-swatch {
-  height:28px; border-radius:5px; margin-bottom:7px; overflow:hidden; position:relative;
-}
-.preset-name { font-size:11px; font-weight:600; color:var(--text-strong); }
-.preset-desc { font-size:10px; color:var(--text-subtle); margin-top:1px; }
-
-/* Blur type tabs - 3+2 grid */
-.blur-tabs-grid {
-  display:grid; grid-template-columns:1fr 1fr 1fr; gap:3px; margin-bottom:3px;
-}
-.blur-tabs-row2 {
-  display:grid; grid-template-columns:1fr 1fr; gap:3px;
-}
+/* Blur type tabs */
+.blur-tabs-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:3px; margin-bottom:3px; }
+.blur-tabs-row2 { display:grid; grid-template-columns:1fr 1fr; gap:3px; }
 .blur-tab {
   display:flex; align-items:center; justify-content:center; gap:4px;
   padding:6px 4px; border-radius:6px; font-size:10px; font-weight:600;
   color:var(--text-muted); cursor:pointer; transition:all 150ms;
-  border:1px solid transparent; letter-spacing:-.1px;
-  background:var(--surface-inset);
+  border:1px solid transparent; letter-spacing:-.1px; background:var(--surface-inset);
 }
 .blur-tab i { font-size:12px; }
-.blur-tab.active {
-  background:var(--white); color:var(--text-strong);
-  border-color:var(--border-default); box-shadow:var(--shadow-xs);
-}
+.blur-tab.active { background:var(--white); color:var(--text-strong); border-color:var(--border-default); box-shadow:var(--shadow-xs); }
 .blur-tab:hover:not(.active) { background:var(--white); color:var(--text-default); }
 .angle-row { margin-top:10px; display:none; }
 .angle-row.show { display:block; }
@@ -208,7 +190,7 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
 .spin { width:12px; height:12px; border:1.5px solid rgba(255,255,255,.25); border-top-color:white; border-radius:50%; animation:spin .6s linear infinite; }
 @keyframes spin { to { transform:rotate(360deg); } }
 
-/* ── Main area ── */
+/* Main area */
 .main { flex:1; display:flex; align-items:center; justify-content:center; background:var(--surface-inset); position:relative; overflow:hidden; }
 
 .empty-state { display:flex; flex-direction:column; align-items:center; gap:10px; pointer-events:none; }
@@ -237,13 +219,52 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
   background:rgba(255,255,255,.7); border-radius:3px; backdrop-filter:blur(2px);
 }
 .loading.show { display:flex; }
-.loading-spin {
-  width:20px; height:20px; border:2px solid var(--grey-300);
-  border-top-color:var(--grey-800); border-radius:50%; animation:spin .6s linear infinite;
-}
+.loading-spin { width:20px; height:20px; border:2px solid var(--grey-300); border-top-color:var(--grey-800); border-radius:50%; animation:spin .6s linear infinite; }
 
 .main-drop-hint { position:absolute; inset:16px; border:2px dashed var(--brand); border-radius:10px; opacity:0; pointer-events:none; transition:opacity 150ms; }
 .main-drop-hint.show { opacity:.5; }
+
+/* Drafts overlay */
+.drafts-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,.25); z-index:1000;
+  display:none; align-items:stretch; justify-content:flex-end;
+  backdrop-filter:blur(2px);
+}
+.drafts-overlay.show { display:flex; }
+.drafts-panel {
+  width:460px; background:var(--surface-page); display:flex; flex-direction:column;
+  box-shadow:-4px 0 32px rgba(0,0,0,.14); overflow:hidden;
+}
+.drafts-header {
+  padding:16px 20px; border-bottom:1px solid var(--border-muted);
+  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+}
+.drafts-title { font-family:var(--font-display); font-size:15px; color:var(--text-strong); letter-spacing:-.3px; }
+.drafts-list { flex:1; overflow-y:auto; padding:14px; display:flex; flex-direction:column; gap:8px; }
+.drafts-list::-webkit-scrollbar { width:4px; }
+.drafts-list::-webkit-scrollbar-thumb { background:var(--border-default); border-radius:2px; }
+.draft-card {
+  border:1px solid var(--border-muted); border-radius:10px; overflow:hidden;
+  display:flex; background:var(--white); transition:box-shadow 150ms;
+}
+.draft-card:hover { box-shadow:var(--shadow-sm); }
+.draft-thumb { width:120px; flex-shrink:0; background:var(--surface-inset); display:flex; align-items:center; justify-content:center; }
+.draft-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.draft-info { flex:1; padding:12px 14px; display:flex; flex-direction:column; }
+.draft-name { font-size:12px; font-weight:600; color:var(--text-strong); letter-spacing:-.1px; }
+.draft-meta { font-size:10px; color:var(--text-muted); margin-top:2px; }
+.draft-actions { display:flex; gap:4px; margin-top:auto; padding-top:10px; }
+.draft-btn {
+  height:26px; padding:0 10px; border-radius:9999px; font-family:var(--font-ui);
+  font-size:10px; font-weight:600; cursor:pointer; border:1px solid var(--border-default);
+  background:var(--surface-inset); color:var(--text-muted); display:flex;
+  align-items:center; justify-content:center; gap:3px; transition:all 150ms; letter-spacing:-.1px; white-space:nowrap;
+}
+.draft-btn i { font-size:11px; }
+.draft-btn:hover { background:var(--white); color:var(--text-default); }
+.draft-btn.danger:hover { background:rgba(199,41,40,.06); color:var(--error); border-color:rgba(199,41,40,.3); }
+.drafts-empty { text-align:center; color:var(--text-subtle); font-size:12px; padding:48px 20px; line-height:1.6; }
+.drafts-empty i { font-size:28px; display:block; margin-bottom:10px; }
 </style>
 </head>
 <body>
@@ -253,11 +274,14 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
   <div class="sb-header">
     <span class="logo">dafolle</span>
     <span class="badge">Blur Studio</span>
+    <div style="margin-left:auto">
+      <div class="icon-btn" id="openDraftsBtn" title="Brouillons"><i class="ti ti-folder"></i></div>
+    </div>
   </div>
 
   <!-- Import -->
   <div class="sb-section">
-    <div class="sb-label">Image</div>
+    <div class="sb-label">image</div>
     <div class="import-zone" id="importZone">
       <input type="file" accept="image/*" id="fileInput">
       <div class="import-icon"><i class="ti ti-photo-up"></i></div>
@@ -266,15 +290,9 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
     </div>
   </div>
 
-  <!-- Presets -->
-  <div class="sb-section">
-    <div class="sb-label">Presets</div>
-    <div class="presets-grid" id="presetsGrid"></div>
-  </div>
-
   <!-- Blur type -->
   <div class="sb-section">
-    <div class="sb-label">Type de flou</div>
+    <div class="sb-label">type de flou</div>
     <div class="blur-tabs-grid">
       <div class="blur-tab active" data-t="horizontal"><i class="ti ti-arrows-horizontal"></i>Horizontal</div>
       <div class="blur-tab" data-t="vertical"><i class="ti ti-arrows-vertical"></i>Vertical</div>
@@ -294,7 +312,7 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
 
   <!-- Blur adjustments -->
   <div class="sb-section">
-    <div class="sb-label">Flou</div>
+    <div class="sb-label">flou</div>
     <div class="ctrl">
       <div class="ctrl-head"><span>Intensité</span><span class="ctrl-val" id="vBlur">60</span></div>
       <input type="range" id="sBlur" min="0" max="100" value="60">
@@ -311,7 +329,7 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
 
   <!-- Image adjustments -->
   <div class="sb-section">
-    <div class="sb-label">Réglages image</div>
+    <div class="sb-label">réglages image</div>
     <div class="ctrl">
       <div class="ctrl-head"><span>Luminosité</span><span class="ctrl-val" id="vBright">0</span></div>
       <input type="range" id="sBright" min="-80" max="80" value="0">
@@ -330,9 +348,9 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
     </div>
   </div>
 
-  <!-- Zone nette (brush mask) -->
+  <!-- Zone nette -->
   <div class="sb-section">
-    <div class="sb-label">Zone nette</div>
+    <div class="sb-label">zone nette</div>
     <div class="toggle-row">
       <span class="toggle-label">Masque au pinceau</span>
       <div class="toggle" id="maskToggle"></div>
@@ -352,17 +370,23 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
       <div class="mask-row">
         <div class="mask-btn active-btn" id="btnPaint"><i class="ti ti-brush"></i>Peindre</div>
         <div class="mask-btn" id="btnErase"><i class="ti ti-eraser"></i>Effacer</div>
-        <div class="mask-btn" id="btnReset"><i class="ti ti-trash"></i>Reset</div>
+      </div>
+      <div class="mask-row">
+        <div class="mask-btn" id="btnUndo" style="opacity:.4"><i class="ti ti-arrow-back-up"></i>Annuler</div>
+        <div class="mask-btn" id="btnReset"><i class="ti ti-trash"></i>Tout effacer</div>
       </div>
     </div>
   </div>
 
   <!-- Export -->
   <div class="sb-section" style="border-bottom:none; margin-top:auto;">
-    <div class="sb-label">Exporter</div>
+    <div class="sb-label">exporter</div>
     <div class="export-btns">
       <button class="btn btn-primary" id="exportJpeg" disabled><i class="ti ti-download"></i>JPEG</button>
       <button class="btn btn-secondary" id="exportWebp" disabled><i class="ti ti-file-download"></i>WebP</button>
+    </div>
+    <div style="margin-top:6px">
+      <button class="btn btn-secondary" id="saveDraftBtn" disabled style="height:30px; font-size:10px"><i class="ti ti-bookmark" style="font-size:12px"></i>Sauvegarder brouillon</button>
     </div>
     <div class="export-note" id="exportNote">Importez une image pour commencer</div>
   </div>
@@ -383,6 +407,17 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
   </div>
 </main>
 
+<!-- Drafts panel -->
+<div class="drafts-overlay" id="draftsOverlay">
+  <div class="drafts-panel">
+    <div class="drafts-header">
+      <span class="drafts-title">Brouillons</span>
+      <div class="icon-btn" id="closeDraftsBtn"><i class="ti ti-x"></i></div>
+    </div>
+    <div class="drafts-list" id="draftsList"></div>
+  </div>
+</div>
+
 <script>
 // ── State ──────────────────────────────────────────────────────────────────────
 const S = {
@@ -391,68 +426,39 @@ const S = {
   blurIntensity: 60, grainIntensity: 30, samples: 32,
   brightness: 0, contrast: 0, saturation: 0, hue: 0,
   maskMode: false, maskErase: false, brushSize: 40, maskFeather: 40,
-  activePreset: null,
 };
 
-let maskCanvas = null;        // same dims as preview canvas, white = sharp areas
+let maskCanvas = null;
 let renderTimer = null;
 let isPainting = false;
 let lastPx = null, lastPy = null;
 
-// ── Presets ───────────────────────────────────────────────────────────────────
-const PRESETS = [
-  { id:'flamme',  name:'Flamme',  desc:'Diagonal 45°',    t:'diagonal',  a:45,  i:80, g:38, s:32, bg:'linear-gradient(135deg,#c0391b 0%,#e8630a 60%,#f09830 100%)' },
-  { id:'brume',   name:'Brume',   desc:'Diagonal 38°',    t:'diagonal',  a:38,  i:62, g:48, s:30, bg:'linear-gradient(145deg,#6b1c1c 0%,#8d4040 50%,#6b7280 100%)' },
-  { id:'cristal', name:'Cristal', desc:'Vertical',        t:'vertical',  a:90,  i:88, g:18, s:36, bg:'linear-gradient(180deg,#1e3a5f 0%,#3e7aaa 50%,#a0c8e0 100%)' },
-  { id:'foret',   name:'Forêt',   desc:'Vertical',        t:'vertical',  a:90,  i:72, g:44, s:30, bg:'linear-gradient(180deg,#1a3d1a 0%,#3b6b3b 50%,#7aad7a 100%)' },
-  { id:'spectre', name:'Spectre', desc:'Horizontal',      t:'horizontal',a:0,   i:58, g:76, s:30, bg:'linear-gradient(90deg,#111 0%,#3a3a3a 50%,#888 100%)' },
-  { id:'braise',  name:'Braise',  desc:'Radial',          t:'radial',    a:0,   i:55, g:80, s:32, bg:'radial-gradient(ellipse at 40% 50%,#7b1010 0%,#b03030 50%,#2a0a0a 100%)' },
-  { id:'spirale', name:'Spirale', desc:'Rotation',        t:'rotation',  a:0,   i:60, g:40, s:35, bg:'conic-gradient(from 0deg at 50% 50%,#1a1a2e,#3d2a6b,#1a1a2e,#2a3d6b,#1a1a2e)' },
-  { id:'ombre',   name:'Ombre',   desc:'Diagonal 135°',   t:'diagonal',  a:135, i:68, g:52, s:30, bg:'linear-gradient(225deg,#0f0f1a 0%,#2d2d4a 40%,#b8860b 100%)' },
-];
+// ── Undo system ────────────────────────────────────────────────────────────────
+const maskHistory = [];
+const MAX_HISTORY = 25;
 
-function buildPresets() {
-  const g = document.getElementById('presetsGrid');
-  PRESETS.forEach(p => {
-    const c = document.createElement('div');
-    c.className = 'preset-card'; c.dataset.id = p.id;
-    c.innerHTML = `<div class="preset-swatch" style="background:${p.bg}"></div><div class="preset-name">${p.name}</div><div class="preset-desc">${p.desc}</div>`;
-    c.addEventListener('click', () => applyPreset(p.id));
-    g.appendChild(c);
-  });
+function saveMaskState() {
+  if (!maskCanvas) return;
+  const snapshot = maskCanvas.getContext('2d').getImageData(0, 0, maskCanvas.width, maskCanvas.height);
+  maskHistory.push(snapshot);
+  if (maskHistory.length > MAX_HISTORY) maskHistory.shift();
+  updateUndoBtn();
 }
 
-function applyPreset(id) {
-  const p = PRESETS.find(x => x.id === id);
-  if (!p) return;
-  S.activePreset = id;
-  Object.assign(S, { blurType:p.t, blurAngle:p.a, blurIntensity:p.i, grainIntensity:p.g, samples:p.s });
-  syncUI();
+function undoMask() {
+  if (!maskHistory.length || !maskCanvas) return;
+  const snapshot = maskHistory.pop();
+  maskCanvas.getContext('2d').putImageData(snapshot, 0, 0);
+  updateUndoBtn();
   scheduleRender();
-  document.querySelectorAll('.preset-card').forEach(c => c.classList.toggle('active', c.dataset.id === id));
 }
 
-function syncUI() {
-  document.querySelectorAll('.blur-tab').forEach(t => t.classList.toggle('active', t.dataset.t === S.blurType));
-  document.getElementById('angleRow').classList.toggle('show', S.blurType === 'diagonal');
-  setSl('sBlur','vBlur',S.blurIntensity,'');
-  setSl('sGrain','vGrain',S.grainIntensity,'');
-  setSl('sSamples','vSamples',S.samples,'');
-  setSl('sAngle','vAngle',S.blurAngle,'°');
-  setSl('sBright','vBright',S.brightness,'');
-  setSl('sContrast','vContrast',S.contrast,'');
-  setSl('sSat','vSat',S.saturation,'');
-  setSl('sHue','vHue',S.hue,'°');
-  setSl('sBrush','vBrush',S.brushSize,'px');
-  setSl('sFeather','vFeather',S.maskFeather,'px');
+function updateUndoBtn() {
+  const btn = document.getElementById('btnUndo');
+  if (btn) btn.style.opacity = maskHistory.length > 0 ? '1' : '0.4';
 }
 
-function setSl(sid, vid, val, sfx) {
-  document.getElementById(sid).value = val;
-  document.getElementById(vid).textContent = (val > 0 && sfx !== '°' ? '+' : '') + val + sfx;
-}
-
-// ── Image loading ─────────────────────────────────────────────────────────────
+// ── Image loading ──────────────────────────────────────────────────────────────
 function loadImage(file) {
   const url = URL.createObjectURL(file);
   const img = new Image();
@@ -462,6 +468,7 @@ function loadImage(file) {
     document.getElementById('canvasWrap').classList.add('show');
     document.getElementById('exportJpeg').disabled = false;
     document.getElementById('exportWebp').disabled = false;
+    document.getElementById('saveDraftBtn').disabled = false;
     document.getElementById('importName').textContent = file.name;
     document.getElementById('exportNote').textContent = `${S.iw.toLocaleString()} × ${S.ih.toLocaleString()} px`;
     sizeCanvas();
@@ -487,13 +494,14 @@ function initMask() {
   const c = document.getElementById('previewCanvas');
   const prev = maskCanvas;
   maskCanvas = mk(c.width, c.height);
-  // If resizing from existing mask, scale it
   if (prev && prev.width > 0) {
     maskCanvas.getContext('2d').drawImage(prev, 0, 0, c.width, c.height);
   }
+  maskHistory.length = 0;
+  updateUndoBtn();
 }
 
-// ── Render pipeline ──────────────────────────────────────────────────────────
+// ── Render pipeline ────────────────────────────────────────────────────────────
 function scheduleRender() {
   if (renderTimer) clearTimeout(renderTimer);
   renderTimer = setTimeout(doRender, 80);
@@ -505,26 +513,19 @@ async function doRender() {
   const ctx = c.getContext('2d');
   document.getElementById('loading').classList.add('show');
   await new Promise(r => setTimeout(r, 0));
-  renderFrame(ctx, S.image, c.width, c.height, S.samples);
+  renderFrame(ctx, S.image, c.width, c.height, S.samples, false);
   document.getElementById('loading').classList.remove('show');
 }
 
-function renderFrame(ctx, src, w, h, samples) {
-  // Step 1: color-adjusted source
+function renderFrame(ctx, src, w, h, samples, noOverlay) {
   const processed = getProcessed(src, w, h);
-
-  // Step 2: blur
   if (S.maskMode && maskCanvas) {
     renderWithMask(ctx, processed, w, h, samples);
   } else {
     renderBlur(ctx, processed, w, h, samples);
   }
-
-  // Step 3: grain
   if (S.grainIntensity > 0) applyGrain(ctx, w, h, S.grainIntensity);
-
-  // Step 4: mask overlay (blue tint showing painted area)
-  if (S.maskMode && maskCanvas) drawMaskOverlay(ctx, w, h);
+  if (!noOverlay && S.maskMode && maskCanvas) drawMaskOverlay(ctx, w, h);
 }
 
 function getProcessed(src, w, h) {
@@ -539,15 +540,13 @@ function getProcessed(src, w, h) {
   return tc;
 }
 
-// ── Blur algorithms ──────────────────────────────────────────────────────────
-// Gaussian-weighted running average — no banding, no alpha darkening
+// ── Blur algorithms ────────────────────────────────────────────────────────────
 function gaussPts(N, sigma) {
   const pts = [];
   for (let i = 0; i < N; i++) {
     const t = (i / (N - 1)) - 0.5;
     pts.push({ t, w: Math.exp(-0.5 * (t / sigma) ** 2) });
   }
-  // Sort highest weight first so first draw is the unblurred center
   return pts.sort((a, b) => b.w - a.w);
 }
 
@@ -568,7 +567,6 @@ function renderLinear(ctx, src, w, h, samples) {
     const r = S.blurAngle * Math.PI / 180;
     dx = Math.cos(r) * maxD; dy = Math.sin(r) * maxD;
   }
-
   ctx.clearRect(0, 0, w, h);
   const pts = gaussPts(samples, 0.28);
   let totalW = 0;
@@ -601,7 +599,7 @@ function renderZoom(ctx, src, w, h, samples) {
 }
 
 function renderRotation(ctx, src, w, h, samples) {
-  const maxA = (S.blurIntensity / 100) * 20 * Math.PI / 180; // max ±10°
+  const maxA = (S.blurIntensity / 100) * 20 * Math.PI / 180;
   const cx = w * 0.5, cy = h * 0.5;
   ctx.clearRect(0, 0, w, h);
   const pts = gaussPts(samples, 0.28);
@@ -623,19 +621,13 @@ function renderRotation(ctx, src, w, h, samples) {
   ctx.globalAlpha = 1;
 }
 
-// ── Focal mask (brush) — progressive multi-level ─────────────────────────────
+// ── Focal mask ─────────────────────────────────────────────────────────────────
 function renderWithMask(ctx, processed, w, h, samples) {
-  // Single full-blur render
   const blurFull = mk(w, h);
   renderBlur(blurFull.getContext('2d'), processed, w, h, samples);
-
   ctx.clearRect(0, 0, w, h);
-  ctx.drawImage(blurFull, 0, 0); // base: full blur everywhere
-
+  ctx.drawImage(blurFull, 0, 0);
   const f = Math.max(1, S.maskFeather);
-
-  // 7 levels with finer steps and a wider outer zone → smooth color ramp,
-  // no visible "jump" between sharp and blurred colors.
   applyMasked(ctx, blendC(processed, blurFull, 0.04, w, h), w, h, f * 11.0);
   applyMasked(ctx, blendC(processed, blurFull, 0.14, w, h), w, h, f *  6.5);
   applyMasked(ctx, blendC(processed, blurFull, 0.28, w, h), w, h, f *  3.6);
@@ -645,7 +637,6 @@ function renderWithMask(ctx, processed, w, h, samples) {
   applyMasked(ctx, blendC(processed, blurFull, 0.93, w, h), w, h, f *  0.05);
 }
 
-// Mix: sharpFrac * a + (1-sharpFrac) * b
 function blendC(a, b, sharpFrac, w, h) {
   const c = mk(w, h);
   const cc = c.getContext('2d');
@@ -656,22 +647,17 @@ function blendC(a, b, sharpFrac, w, h) {
   return c;
 }
 
-// Apply source to ctx, masked by feathered maskCanvas
 function applyMasked(ctx, source, w, h, featherR) {
   const layC = mk(w, h);
   const lc = layC.getContext('2d');
   lc.drawImage(source, 0, 0, w, h);
-
-  // Feathered mask
   const fmC = mk(w, h);
   const fmc = fmC.getContext('2d');
   if (featherR > 0.5) fmc.filter = `blur(${Math.min(featherR, 400)}px)`;
   fmc.drawImage(maskCanvas, 0, 0, w, h);
   fmc.filter = 'none';
-
   lc.globalCompositeOperation = 'destination-in';
   lc.drawImage(fmC, 0, 0);
-
   ctx.drawImage(layC, 0, 0);
 }
 
@@ -686,7 +672,7 @@ function drawMaskOverlay(ctx, w, h) {
   ctx.drawImage(oc, 0, 0);
 }
 
-// ── Grain ─────────────────────────────────────────────────────────────────────
+// ── Grain ──────────────────────────────────────────────────────────────────────
 function applyGrain(ctx, w, h, intensity) {
   const d = ctx.getImageData(0, 0, w, h);
   const px = d.data, str = intensity * 1.3;
@@ -699,41 +685,33 @@ function applyGrain(ctx, w, h, intensity) {
   ctx.putImageData(d, 0, 0);
 }
 
-// ── Brush painting ─────────────────────────────────────────────────────────
-// Pixel-based with max(current, gradient) — gradient can never accumulate
-// beyond its own shape, no matter how many overlapping strokes.
+// ── Brush ──────────────────────────────────────────────────────────────────────
 function paintAt(x, y) {
   if (!maskCanvas) return;
-  const r = S.brushSize;
-  const r2 = r * r;
+  const r = S.brushSize, r2 = r * r;
   const rx0 = Math.max(0, Math.floor(x - r - 1));
   const ry0 = Math.max(0, Math.floor(y - r - 1));
   const rx1 = Math.min(maskCanvas.width,  Math.ceil(x + r + 1));
   const ry1 = Math.min(maskCanvas.height, Math.ceil(y + r + 1));
   const bw = rx1 - rx0, bh = ry1 - ry0;
   if (bw <= 0 || bh <= 0) return;
-
   const mc = maskCanvas.getContext('2d');
   const id = mc.getImageData(rx0, ry0, bw, bh);
   const data = id.data;
-
   for (let row = 0; row < bh; row++) {
     for (let col = 0; col < bw; col++) {
       const dx = (rx0 + col) - x;
       const dy = (ry0 + row) - y;
       const d2 = dx * dx + dy * dy;
       if (d2 > r2) continue;
-
-      // cos falloff: 1 at center, 0 at edge — stays progressive regardless of passes
       const t = Math.sqrt(d2) / r;
       const a = Math.round(Math.cos(t * Math.PI * 0.5) * 255);
       const i = (row * bw + col) * 4;
-
       if (S.maskErase) {
         data[i + 3] = Math.max(0, data[i + 3] - a);
       } else {
         data[i] = 255; data[i + 1] = 255; data[i + 2] = 255;
-        data[i + 3] = Math.max(data[i + 3], a); // max — no accumulation beyond gradient
+        data[i + 3] = Math.max(data[i + 3], a);
       }
     }
   }
@@ -742,7 +720,6 @@ function paintAt(x, y) {
 
 function strokePaint(x1, y1, x2, y2) {
   const dist = Math.hypot(x2 - x1, y2 - y1);
-  // Larger step OK since max-blending removes accumulation artefacts
   const step = Math.max(S.brushSize * 0.4, 2);
   const count = Math.ceil(dist / step);
   for (let i = 0; i <= count; i++) {
@@ -757,7 +734,7 @@ function getCanvasPos(e) {
   return { x: e.clientX - r.left, y: e.clientY - r.top };
 }
 
-// ── Export ────────────────────────────────────────────────────────────────────
+// ── Export ─────────────────────────────────────────────────────────────────────
 async function exportImage(mime) {
   if (!S.image) return;
   const isJpeg = mime === 'image/jpeg';
@@ -773,42 +750,304 @@ async function exportImage(mime) {
 
   const ec = mk(ew, eh);
   const ectx = ec.getContext('2d');
-
-  // Save state, use export dims for mask
   const prevMask = maskCanvas;
   if (maskCanvas) {
     maskCanvas = mk(ew, eh);
     maskCanvas.getContext('2d').drawImage(prevMask, 0, 0, ew, eh);
   }
   const savedFeather = S.maskFeather;
-  // Scale feather proportionally
   const c = document.getElementById('previewCanvas');
   S.maskFeather = Math.round(S.maskFeather * ew / c.width);
 
-  renderFrame(ectx, S.image, ew, eh, 50);
+  renderFrame(ectx, S.image, ew, eh, 50, true);
 
-  // Restore
   maskCanvas = prevMask;
   S.maskFeather = savedFeather;
 
   ec.toBlob(blob => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `dafolle-${S.activePreset || 'blur'}-${Date.now()}.${isJpeg ? 'jpg' : 'webp'}`;
+    a.download = `dafolle-blur-${Date.now()}.${isJpeg ? 'jpg' : 'webp'}`;
     a.click();
     URL.revokeObjectURL(a.href);
     btn.disabled = false; btn.innerHTML = prev;
   }, mime, isJpeg ? 0.97 : 0.93);
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── IndexedDB drafts ───────────────────────────────────────────────────────────
+const DB_NAME = 'BlurStudio';
+const DB_VER = 1;
+const STORE_NAME = 'drafts';
+let db = null;
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    if (db) return resolve(db);
+    const req = indexedDB.open(DB_NAME, DB_VER);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains(STORE_NAME)) {
+        d.createObjectStore(STORE_NAME, { keyPath: 'id' });
+      }
+    };
+    req.onsuccess = e => { db = e.target.result; resolve(db); };
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function saveDraft() {
+  if (!S.image) return;
+  const btn = document.getElementById('saveDraftBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spin" style="border-color:rgba(0,0,0,.1);border-top-color:var(--text-muted)"></div>';
+
+  try {
+    const d = await openDB();
+    const previewC = document.getElementById('previewCanvas');
+
+    // Thumbnail from current canvas
+    const thumbW = 280, thumbH = Math.round(280 * previewC.height / previewC.width);
+    const thumbC = mk(thumbW, thumbH);
+    thumbC.getContext('2d').drawImage(previewC, 0, 0, thumbW, thumbH);
+
+    // Full original image
+    const imgC = mk(S.iw, S.ih);
+    imgC.getContext('2d').drawImage(S.image, 0, 0);
+    const imageDataUrl = imgC.toDataURL('image/jpeg', 0.92);
+    const maskDataUrl = maskCanvas ? maskCanvas.toDataURL() : null;
+
+    const now = new Date();
+    const draft = {
+      id: Date.now(),
+      name: document.getElementById('importName').textContent || 'Image',
+      timestamp: Date.now(),
+      dateStr: now.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }),
+      imageDataUrl,
+      maskDataUrl,
+      thumbnail: thumbC.toDataURL('image/jpeg', 0.75),
+      settings: {
+        blurType: S.blurType, blurAngle: S.blurAngle,
+        blurIntensity: S.blurIntensity, grainIntensity: S.grainIntensity, samples: S.samples,
+        brightness: S.brightness, contrast: S.contrast, saturation: S.saturation, hue: S.hue,
+        maskMode: S.maskMode, maskErase: S.maskErase, brushSize: S.brushSize, maskFeather: S.maskFeather,
+      },
+    };
+
+    await new Promise((resolve, reject) => {
+      const tx = d.transaction(STORE_NAME, 'readwrite');
+      tx.objectStore(STORE_NAME).put(draft);
+      tx.oncomplete = resolve;
+      tx.onerror = () => reject(tx.error);
+    });
+
+    btn.innerHTML = '<i class="ti ti-check" style="font-size:12px"></i>Sauvegardé';
+    setTimeout(() => {
+      btn.innerHTML = '<i class="ti ti-bookmark" style="font-size:12px"></i>Sauvegarder brouillon';
+      btn.disabled = false;
+    }, 1800);
+  } catch (e) {
+    btn.innerHTML = '<i class="ti ti-bookmark" style="font-size:12px"></i>Sauvegarder brouillon';
+    btn.disabled = false;
+    console.error('Draft save error:', e);
+  }
+}
+
+async function getAllDrafts() {
+  const d = await openDB();
+  return new Promise((resolve, reject) => {
+    const req = d.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME).getAll();
+    req.onsuccess = () => resolve(req.result.sort((a, b) => b.timestamp - a.timestamp));
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function deleteDraft(id) {
+  const d = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = d.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).delete(id);
+    tx.oncomplete = resolve;
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+async function loadDraftData(draft) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      S.image = img; S.iw = img.naturalWidth; S.ih = img.naturalHeight;
+      const ds = draft.settings;
+      S.blurType = ds.blurType; S.blurAngle = ds.blurAngle;
+      S.blurIntensity = ds.blurIntensity; S.grainIntensity = ds.grainIntensity; S.samples = ds.samples;
+      S.brightness = ds.brightness; S.contrast = ds.contrast; S.saturation = ds.saturation; S.hue = ds.hue;
+      S.maskMode = ds.maskMode; S.maskErase = ds.maskErase; S.brushSize = ds.brushSize; S.maskFeather = ds.maskFeather;
+
+      document.getElementById('importName').textContent = draft.name;
+      document.getElementById('emptyState').style.display = 'none';
+      document.getElementById('canvasWrap').classList.add('show');
+      document.getElementById('exportJpeg').disabled = false;
+      document.getElementById('exportWebp').disabled = false;
+      document.getElementById('saveDraftBtn').disabled = false;
+      document.getElementById('exportNote').textContent = `${S.iw.toLocaleString()} × ${S.ih.toLocaleString()} px`;
+
+      sizeCanvas();
+
+      const finalize = () => {
+        syncUI();
+        document.getElementById('maskToggle').classList.toggle('on', S.maskMode);
+        document.getElementById('maskHint').classList.toggle('show', S.maskMode);
+        document.getElementById('maskControls').classList.toggle('show', S.maskMode);
+        document.getElementById('previewCanvas').style.cursor = S.maskMode ? 'none' : 'default';
+        scheduleRender();
+        resolve();
+      };
+
+      if (draft.maskDataUrl) {
+        const maskImg = new Image();
+        maskImg.onload = () => {
+          const c = document.getElementById('previewCanvas');
+          maskCanvas = mk(c.width, c.height);
+          maskCanvas.getContext('2d').drawImage(maskImg, 0, 0, c.width, c.height);
+          maskHistory.length = 0; updateUndoBtn();
+          finalize();
+        };
+        maskImg.src = draft.maskDataUrl;
+      } else {
+        initMask();
+        finalize();
+      }
+    };
+    img.src = draft.imageDataUrl;
+  });
+}
+
+async function downloadDraftExport(draft) {
+  const img = new Image();
+  await new Promise(r => { img.onload = r; img.src = draft.imageDataUrl; });
+
+  const MAX = 4000;
+  let ew = img.naturalWidth, eh = img.naturalHeight;
+  if (Math.max(ew, eh) > MAX) { const sc = MAX / Math.max(ew, eh); ew = Math.round(ew*sc); eh = Math.round(eh*sc); }
+
+  const ec = mk(ew, eh);
+  const ectx = ec.getContext('2d');
+
+  // Backup state
+  const savedImg = S.image, savedIw = S.iw, savedIh = S.ih;
+  const savedMask = maskCanvas, savedFeather = S.maskFeather, savedMode = S.maskMode;
+  const savedSettings = { blurType:S.blurType, blurAngle:S.blurAngle, blurIntensity:S.blurIntensity, grainIntensity:S.grainIntensity, samples:S.samples, brightness:S.brightness, contrast:S.contrast, saturation:S.saturation, hue:S.hue };
+
+  const ds = draft.settings;
+  Object.assign(S, ds);
+  S.image = img; S.iw = img.naturalWidth; S.ih = img.naturalHeight;
+
+  if (draft.maskDataUrl && ds.maskMode) {
+    const maskImg = new Image();
+    await new Promise(r => { maskImg.onload = r; maskImg.src = draft.maskDataUrl; });
+    maskCanvas = mk(ew, eh);
+    maskCanvas.getContext('2d').drawImage(maskImg, 0, 0, ew, eh);
+    S.maskFeather = Math.round(ds.maskFeather * ew / img.naturalWidth);
+  } else {
+    maskCanvas = null;
+    S.maskMode = false;
+  }
+
+  renderFrame(ectx, img, ew, eh, 50, true);
+
+  // Restore
+  S.image = savedImg; S.iw = savedIw; S.ih = savedIh;
+  maskCanvas = savedMask; S.maskFeather = savedFeather; S.maskMode = savedMode;
+  Object.assign(S, savedSettings);
+
+  ec.toBlob(blob => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `dafolle-brouillon-${draft.id}.jpg`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }, 'image/jpeg', 0.97);
+}
+
+// ── Drafts panel UI ────────────────────────────────────────────────────────────
+let draftsMap = {};
+
+function openDraftsPanel() {
+  document.getElementById('draftsOverlay').classList.add('show');
+  renderDraftsList();
+}
+
+function closeDraftsPanel() {
+  document.getElementById('draftsOverlay').classList.remove('show');
+}
+
+async function renderDraftsList() {
+  const list = document.getElementById('draftsList');
+  list.innerHTML = '<div class="drafts-empty"><i class="ti ti-loader" style="animation:spin .8s linear infinite"></i>Chargement...</div>';
+  try {
+    const drafts = await getAllDrafts();
+    draftsMap = Object.fromEntries(drafts.map(d => [d.id, d]));
+
+    if (!drafts.length) {
+      list.innerHTML = '<div class="drafts-empty"><i class="ti ti-folder-open"></i>Aucun brouillon sauvegardé.<br>Travaillez une image et cliquez sur<br>"Sauvegarder brouillon".</div>';
+      return;
+    }
+
+    list.innerHTML = '';
+    drafts.forEach(draft => {
+      const card = document.createElement('div');
+      card.className = 'draft-card';
+      card.innerHTML = `
+        <div class="draft-thumb"><img src="${draft.thumbnail}" alt=""></div>
+        <div class="draft-info">
+          <div>
+            <div class="draft-name">${escHtml(draft.name)}</div>
+            <div class="draft-meta">${escHtml(draft.dateStr || '')} &middot; ${draft.settings.blurType}</div>
+          </div>
+          <div class="draft-actions">
+            <div class="draft-btn" data-action="load" data-id="${draft.id}"><i class="ti ti-pencil"></i>Modifier</div>
+            <div class="draft-btn" data-action="download" data-id="${draft.id}"><i class="ti ti-download"></i>Télécharger</div>
+            <div class="draft-btn danger" data-action="delete" data-id="${draft.id}"><i class="ti ti-trash"></i>Supprimer</div>
+          </div>
+        </div>`;
+      list.appendChild(card);
+    });
+  } catch (e) {
+    list.innerHTML = '<div class="drafts-empty">Erreur lors du chargement.</div>';
+  }
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Helpers ────────────────────────────────────────────────────────────────────
 function mk(w, h) {
   const c = document.createElement('canvas');
   c.width = w; c.height = h;
   return c;
 }
 
-// ── Events ────────────────────────────────────────────────────────────────────
+function syncUI() {
+  document.querySelectorAll('.blur-tab').forEach(t => t.classList.toggle('active', t.dataset.t === S.blurType));
+  document.getElementById('angleRow').classList.toggle('show', S.blurType === 'diagonal');
+  setSl('sBlur','vBlur',S.blurIntensity,'');
+  setSl('sGrain','vGrain',S.grainIntensity,'');
+  setSl('sSamples','vSamples',S.samples,'');
+  setSl('sAngle','vAngle',S.blurAngle,'°');
+  setSl('sBright','vBright',S.brightness,'');
+  setSl('sContrast','vContrast',S.contrast,'');
+  setSl('sSat','vSat',S.saturation,'');
+  setSl('sHue','vHue',S.hue,'°');
+  setSl('sBrush','vBrush',S.brushSize,'px');
+  setSl('sFeather','vFeather',S.maskFeather,'px');
+}
+
+function setSl(sid, vid, val, sfx) {
+  document.getElementById(sid).value = val;
+  document.getElementById(vid).textContent = (val > 0 && sfx !== '°' && sfx !== 'px' ? '+' : '') + val + sfx;
+}
+
+// ── Events ─────────────────────────────────────────────────────────────────────
 document.getElementById('fileInput').addEventListener('change', e => { if (e.target.files[0]) loadImage(e.target.files[0]); });
 
 const importZone = document.getElementById('importZone');
@@ -821,25 +1060,20 @@ mainEl.addEventListener('dragover', e => { e.preventDefault(); document.getEleme
 mainEl.addEventListener('dragleave', () => document.getElementById('dropHint').classList.remove('show'));
 mainEl.addEventListener('drop', e => { e.preventDefault(); document.getElementById('dropHint').classList.remove('show'); if (e.dataTransfer.files[0]) loadImage(e.dataTransfer.files[0]); });
 
-// Blur type tabs
 document.querySelectorAll('.blur-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     S.blurType = tab.dataset.t;
-    S.activePreset = null;
-    document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.blur-tab').forEach(t => t.classList.toggle('active', t === tab));
     document.getElementById('angleRow').classList.toggle('show', S.blurType === 'diagonal');
     scheduleRender();
   });
 });
 
-// Sliders
 function bindSl(id, vid, key, sfx, cb) {
   document.getElementById(id).addEventListener('input', e => {
     const v = +e.target.value;
     S[key] = v;
     document.getElementById(vid).textContent = (v > 0 && sfx !== '°' && sfx !== 'px' ? '+' : '') + v + sfx;
-    if (!cb) S.activePreset = null;
     scheduleRender();
     if (cb) cb(v);
   });
@@ -858,7 +1092,6 @@ bindSl('sBrush','vBrush','brushSize','px', v => {
 });
 bindSl('sFeather','vFeather','maskFeather','px');
 
-// Mask toggle
 document.getElementById('maskToggle').addEventListener('click', () => {
   S.maskMode = !S.maskMode;
   document.getElementById('maskToggle').classList.toggle('on', S.maskMode);
@@ -870,7 +1103,6 @@ document.getElementById('maskToggle').addEventListener('click', () => {
   scheduleRender();
 });
 
-// Paint / Erase / Reset
 document.getElementById('btnPaint').addEventListener('click', () => {
   S.maskErase = false;
   document.getElementById('btnPaint').classList.add('active-btn');
@@ -881,19 +1113,21 @@ document.getElementById('btnErase').addEventListener('click', () => {
   document.getElementById('btnErase').classList.add('active-btn');
   document.getElementById('btnPaint').classList.remove('active-btn');
 });
+document.getElementById('btnUndo').addEventListener('click', () => undoMask());
 document.getElementById('btnReset').addEventListener('click', () => {
   if (maskCanvas) {
+    saveMaskState();
     maskCanvas.getContext('2d').clearRect(0, 0, maskCanvas.width, maskCanvas.height);
     scheduleRender();
   }
 });
 
-// Canvas mouse events
 const previewCanvas = document.getElementById('previewCanvas');
 const brushCursor = document.getElementById('brushCursor');
 
 previewCanvas.addEventListener('mousedown', e => {
   if (!S.maskMode) return;
+  saveMaskState();
   isPainting = true;
   const pos = getCanvasPos(e);
   lastPx = pos.x; lastPy = pos.y;
@@ -904,7 +1138,6 @@ previewCanvas.addEventListener('mousedown', e => {
 previewCanvas.addEventListener('mousemove', e => {
   if (!S.maskMode) return;
   const pos = getCanvasPos(e);
-  // Update brush cursor
   brushCursor.style.display = 'block';
   brushCursor.style.left = pos.x + 'px';
   brushCursor.style.top = pos.y + 'px';
@@ -923,16 +1156,49 @@ previewCanvas.addEventListener('mouseleave', () => {
   document.getElementById('brushCursor').style.display = 'none';
 });
 
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); undoMask(); }
+});
+
 document.getElementById('exportJpeg').addEventListener('click', () => exportImage('image/jpeg'));
 document.getElementById('exportWebp').addEventListener('click', () => exportImage('image/webp'));
+document.getElementById('saveDraftBtn').addEventListener('click', saveDraft);
+
+document.getElementById('openDraftsBtn').addEventListener('click', openDraftsPanel);
+document.getElementById('closeDraftsBtn').addEventListener('click', closeDraftsPanel);
+document.getElementById('draftsOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('draftsOverlay')) closeDraftsPanel();
+});
+
+document.getElementById('draftsList').addEventListener('click', async e => {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  const id = parseInt(btn.dataset.id);
+  const draft = draftsMap[id];
+  if (!draft) return;
+
+  if (btn.dataset.action === 'load') {
+    closeDraftsPanel();
+    await loadDraftData(draft);
+  } else if (btn.dataset.action === 'download') {
+    const prevOpacity = btn.style.opacity;
+    btn.style.opacity = '0.4';
+    btn.style.pointerEvents = 'none';
+    await downloadDraftExport(draft);
+    btn.style.opacity = prevOpacity;
+    btn.style.pointerEvents = '';
+  } else if (btn.dataset.action === 'delete') {
+    if (confirm('Supprimer ce brouillon ?')) {
+      await deleteDraft(id);
+      renderDraftsList();
+    }
+  }
+});
 
 window.addEventListener('resize', () => {
   if (!S.image) return;
   sizeCanvas(); initMask(); scheduleRender();
 });
-
-// ── Init ──────────────────────────────────────────────────────────────────────
-buildPresets();
 </script>
 </body>
 </html>
